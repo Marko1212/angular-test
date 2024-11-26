@@ -25,22 +25,25 @@ import {
   styles: [],
 })
 export class AppComponent implements OnInit {
-  title = 'angular-test';
-
   usernameForm!: FormGroup;
   username: string | undefined;
 
   ngOnInit(): void {
     this.usernameForm = new FormGroup({
-      firstname: new FormControl('Coder', Validators.required),
-      lastname: new FormControl('Byte', Validators.required),
+      firstname: new FormControl('Coder', [Validators.required]),
+      lastname: new FormControl('Byte', [Validators.required]),
     });
   }
 
   generateUsername(): void {
-    const firstname = this.usernameForm?.get('firstname')?.value;
-    const lastname = this.usernameForm?.get('lastname')?.value;
-    const randomInit = Math.floor(Math.random() * 9) + 1;
-    this.username = `${firstname.toLowerCase()}_${lastname.toLowerCase()}_${randomInit}`;
+    if (this.usernameForm.valid) {
+      console.log('Form Submitted:', this.usernameForm.getRawValue());
+      const firstname = this.usernameForm?.get('firstname')?.value;
+      const lastname = this.usernameForm?.get('lastname')?.value;
+      const randomInit = Math.floor(Math.random() * 9) + 1;
+      this.username = `${firstname.toLowerCase()}_${lastname.toLowerCase()}_${randomInit}`;
+    } else {
+      console.log('Form is invalid!');
+    }
   }
 }
